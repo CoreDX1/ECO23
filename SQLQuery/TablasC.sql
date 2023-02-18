@@ -1,14 +1,55 @@
-create table RolUsuario(
-     idRolUsuario SMALLSERIAL,
-     nombre varchar(15),
-     PRIMARY KEY(idRolUsuario)
+CREATE TABLE ROL_USER(
+     ID_ROL_USER  SMALLSERIAL,
+     NAME VARCHAR(15),
+     PRIMARY KEY(ID_ROL_USER)
  );
 
--- Tabla Usuarios
-create table Usuarios(
-     idUsuario SMALLSERIAL,
-     nombre varchar(15) not null,
-     edad int not null,
-     telefono varchar(40) not null,
-     PRIMARY KEY(idRolUsuario)
- );
+CREATE TABLE PROVINCIA(
+    ID_PROVINCIA SMALLSERIAL,
+    NOMBRE VARCHAR(20) NOT NULL,
+    PRIMARY KEY(ID_PROVINCIA)
+);
+
+CREATE TABLE USER_STATUS(
+    ID_USER_STATUS SMALLSERIAL,
+    NOMBRE VARCHAR(20) NOT NULL,
+    PRIMARY KEY(ID_USER_STATUS)
+);
+
+CREATE TABLE USER_LOCATION(
+    ID_LOCATION SMALLSERIAL,
+    STREET VARCHAR(20) NOT NULL,
+    HEIGHT INT NOT NULL,
+    ID_PROVINCE SMALLINT NOT NULL,
+    FOREIGN KEY (ID_PROVICIA) REFERENCES PROVINCIA(ID_PROVINCIA) on delete cascade,
+)
+
+CREATE TABLE USER_PERMISSION(
+    ID_USER_PERMISSION SMALLSERIAL,
+    ID_USER_ECO SMALLINT NOT NULL,
+    ID_USER_STATUS SMALLINT NOT NULL,
+    PRIMARY KEY(ID_USER_PERMISSION),
+    FOREIGN KEY (ID_USER_ECO) REFERENCES USER_ECO(ID_USER) no delete cascade,
+    FOREIGN KEY (ID_USER_STATUS) REFERENCES USER_STATUS(ID_USER_STATUS) on delete cascade
+);
+
+
+--Como borra los CONSTRAINT
+alter table user_location drop constraint localidad_id_provincia_fkey;
+
+-- Como agregar una foreing key
+alter table user_location add foreign key(id_province) references province(id_province) on delete cascade;
+
+create table USER_PROFILE
+(
+ 	ID_USER_PROFILE SMALLSERIAL,
+ 	ID_USER INT not null,
+ 	ID_LOCATION smallint not null,
+ 	USER_PASSWORD VARCHAR(10) not null,
+ 	EMAIL VARCHAR(30) not null,
+ 	CREATION_DATE TIMESTAMP not null,
+ 	primary key(ID_USER_PROFILE),
+ 	foreign key(ID_USER) references USER_ECO(ID_USER) on delete cascade,
+	foreign key(ID_LOCATION) references USER_LOCATION(id_location) on delete cascade
+);
+
