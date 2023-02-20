@@ -18,18 +18,15 @@ public class UserEcoRepository : IUserEcoRepository
     {
         var fusion = await (
             from user in _context.UserEco
-            join profile in _context.UserProfile on user.IdUser equals profile.IdUser
-            join location in _context.UserLocation on profile.IdLocation equals location.IdLocation
+            // join profile in _context.UserProfile on user.IdUser equals profile.IdUser
+            // join location in _context.UserLocation on profile.IdLocation equals location.IdLocation
             select new
             {
                 user.IdUser,
                 user.CellPhone,
                 user.Name,
-                user.PaternalLastName,
-                user.MaternalLastName,
                 user.UserPermissions,
-                UserProfile = profile,
-                UserLocation = location
+                user.UserProfiles
             }
         ).AsNoTracking().ToListAsync();
 

@@ -15,13 +15,13 @@ public class UserEcoApplication : IUserEcoApplication
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser()
+    public async Task<BaseResponse<dynamic>> ListSelectUser()
     {
-        var response = new BaseResponse<IEnumerable<UserEco>>();
-        IEnumerable<UserEco> user = await _unitOfWork.UserEco.ListSelectUser();
+        var response = new BaseResponse<dynamic>();
+        var user = await _unitOfWork.UserEco.ListSelectUser();
         if (user is null)
         {
-            response.IsSuccess = false;
+            response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
         }
         else

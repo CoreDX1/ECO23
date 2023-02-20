@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
 namespace POS.Domain.Entities;
 
@@ -19,5 +18,6 @@ public partial class UserProfile
 
     public virtual UserLocation IdLocationNavigation { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual UserEco IdUserNavigation { get; set; } = null!;
 }

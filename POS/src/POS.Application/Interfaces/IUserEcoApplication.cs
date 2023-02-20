@@ -5,5 +5,5 @@ namespace POS.Application.Interfaces;
 
 public interface IUserEcoApplication
 {
-    Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser();
+    Task<BaseResponse<dynamic>> ListSelectUser();
 }

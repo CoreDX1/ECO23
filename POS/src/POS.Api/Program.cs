@@ -3,6 +3,21 @@ using POS.Infrastructure.Persistence.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var Myallow = "_Myconfig";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        Myallow,
+        builder =>
+        {
+            builder
+                .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
+});
+
 // Add services to the container.
 
 var Configuration = builder.Configuration;
@@ -29,5 +44,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors(Myallow);
 app.Run();

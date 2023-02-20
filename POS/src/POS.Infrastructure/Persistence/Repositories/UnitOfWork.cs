@@ -6,12 +6,16 @@ namespace POS.Infrastructure.Persistence.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     public IUserEcoRepository UserEco { get; private set; }
+
+    public IUserProfilesRepository UserProfiles { get; private set; }
+
     private readonly Eco23Context _context;
 
     public UnitOfWork(Eco23Context context)
     {
         _context = context;
         UserEco = new UserEcoRepository(_context);
+        UserProfiles = new UserProfilesRepository(_context);
     }
 
     public void Dispose()

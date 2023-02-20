@@ -4,5 +4,5 @@ namespace POS.Infrastructure.Persistence.Interfaces;
 
 public interface IUserEcoRepository
 {
-    Task<IEnumerable<UserEco>> ListSelectUser();
+    Task<dynamic> ListSelectUser();
 }
