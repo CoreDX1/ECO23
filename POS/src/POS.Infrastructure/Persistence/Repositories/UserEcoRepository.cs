@@ -14,9 +14,25 @@ public class UserEcoRepository : IUserEcoRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<UserEco>> ListSelectUser()
+    public async Task<dynamic> ListSelectUser()
     {
-        IEnumerable<UserEco> query = await _context.UserEco.AsNoTracking().ToListAsync();
-        return query;
+        var fusion = await (
+            from user in _context.UserEco
+            join profile in _context.UserProfile on user.IdUser equals profile.IdUser
+            join location in _context.UserLocation on profile.IdLocation equals location.IdLocation
+            select new
+            {
+                user.IdUser,
+                user.CellPhone,
+                user.Name,
+                user.PaternalLastName,
+                user.MaternalLastName,
+                user.UserPermissions,
+                UserProfile = profile,
+                UserLocation = location
+            }
+        ).AsNoTracking().ToListAsync();
+
+        return fusion;
     }
 }
