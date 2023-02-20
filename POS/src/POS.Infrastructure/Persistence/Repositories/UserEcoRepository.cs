@@ -14,9 +14,9 @@ public class UserEcoRepository : IUserEcoRepository
         _context = context;
     }
 
-    public Task<IQueryable<UserEco>> ListSelectUser()
+    public async Task<IEnumerable<UserEco>> ListSelectUser()
     {
-        IQueryable<UserEco> query = _context.UserEcos.AsNoTracking();
-        return Task.FromResult(query);
+        IEnumerable<UserEco> query = await _context.UserEco.AsNoTracking().ToListAsync();
+        return query;
     }
 }
