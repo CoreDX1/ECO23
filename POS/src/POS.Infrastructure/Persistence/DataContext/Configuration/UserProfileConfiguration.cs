@@ -28,10 +28,18 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
             .HasForeignKey(d => d.IdLocation)
             .HasConstraintName("user_profile_id_location_fkey");
 
+        // builder.HasKey(e => e.IdUserProfile).HasName("user_profile_pkey");
+
+        // builder.ToTable("user_profile");
+
+        // builder.Property(e => e.IdUserProfile).HasColumnName("id_user_profile");
+        // builder.Property(e => e.Email).HasMaxLength(30).HasColumnName("email");
+        // builder.Property(e => e.IdUser).HasColumnName("id_user");
+
         builder
-            .HasOne(d => d.IdUserNavigation)
-            .WithMany(p => p.UserProfiles)
-            .HasForeignKey(d => d.IdUser)
-            .HasConstraintName("user_profile_id_user_fkey");
+            .HasOne(e => e.UserEco)
+            .WithOne(e => e.UserProfile)
+            .HasForeignKey<UserProfile>(e => e.IdUser)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

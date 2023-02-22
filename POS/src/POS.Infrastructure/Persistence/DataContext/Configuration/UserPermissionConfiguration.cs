@@ -17,9 +17,10 @@ public class UserPermissionConfiguration : IEntityTypeConfiguration<UserPermissi
         builder.Property(e => e.IdUserStatus).HasColumnName("id_user_status");
 
         builder
-            .HasOne(d => d.IdUserEcoNavigation)
-            .WithMany(p => p.UserPermissions)
-            .HasForeignKey(d => d.IdUserEco)
+            .HasOne(d => d.UserEco)
+            .WithOne(p => p.UserPermissions)
+            .HasForeignKey<UserPermission>(d => d.IdUserEco)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("user_permission_id_user_eco_fkey1");
 
         builder
