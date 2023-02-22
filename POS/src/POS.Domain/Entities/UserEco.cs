@@ -12,8 +12,7 @@ public partial class UserEco
 
     public string CellPhone { get; set; } = null!;
 
-    public virtual ICollection<UserPermission> UserPermissions { get; } =
-        new List<UserPermission>();
+    public virtual UserPermission UserPermissions { get; } = null!;
 
-    public virtual ICollection<UserProfile> UserProfiles { get; } = new List<UserProfile>();
+    public virtual UserProfile UserProfile { get; set; } = null!;
 }
