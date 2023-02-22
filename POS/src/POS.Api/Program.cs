@@ -4,9 +4,22 @@ using POS.Infrastructure.Persistence.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 var Configuration = builder.Configuration;
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "MyAllowedOrigins",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173") // TODO: Change to your domain
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
+});
 
 builder.Services.AddInjectionInfrastructure(Configuration);
 builder.Services.AddInjectionApplication(Configuration);
@@ -16,6 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseCors("MyAllowedOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
