@@ -9,6 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
+            "launchSettingsProfile": "http",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/POS/src/POS.Api/bin/Debug/net7.0/POS.Api.dll",
             "args": [],

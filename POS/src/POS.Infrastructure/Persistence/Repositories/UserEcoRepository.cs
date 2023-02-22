@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.DataContext;
 using POS.Infrastructure.Persistence.Interfaces;
 
@@ -17,15 +18,26 @@ public class UserEcoRepository : IUserEcoRepository
     {
         var fusion = await (
             from user in _context.UserEco
-            // join profile in _context.UserProfile on user.IdUser equals profile.IdUser
-            // join location in _context.UserLocation on profile.IdLocation equals location.IdLocation
+            join location in _context.UserLocation
+                on user.UserProfile.IdLocation equals location.IdLocation
+            join profile in _context.UserProfile on user.IdUser equals profile.IdUser
+            join province in _context.Province on location.IdProvince equals province.IdProvince
             select new
             {
                 user.IdUser,
-                user.CellPhone,
                 user.Name,
+                user.PaternalLastName,
+                user.MaternalLastName,
+                user.CellPhone,
                 user.UserPermissions,
-                user.UserProfiles
+                UserProfile = new
+                {
+                    profile.IdUser,
+                    profile.Email,
+                    profile.UserPassword,
+                    profile.CreationDate,
+                    location = new { location.Street, Province = location.IdProvinceNavigation }
+                }
             }
         ).AsNoTracking().ToListAsync();
 

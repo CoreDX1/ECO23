@@ -1,4 +1,6 @@
-﻿namespace POS.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace POS.Domain.Entities;
 
 public partial class UserPermission
 {
@@ -8,7 +10,9 @@ public partial class UserPermission
 
     public short IdUserStatus { get; set; }
 
+    [JsonIgnore]
     public virtual UserEco UserEco { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual UserStatus IdUserStatusNavigation { get; set; } = null!;
 }

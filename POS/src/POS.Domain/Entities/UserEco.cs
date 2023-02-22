@@ -12,7 +12,7 @@ public partial class UserEco
 
     public string CellPhone { get; set; } = null!;
 
-    public virtual UserPermission UserPermissions { get; } = null!;
+    public virtual UserPermission UserPermissions { get; set; } = null!;
 
     public virtual UserProfile UserProfile { get; set; } = null!;
 }
