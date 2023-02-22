@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.DataContext;
 using POS.Infrastructure.Persistence.Interfaces;
 
