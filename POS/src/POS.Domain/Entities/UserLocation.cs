@@ -14,5 +14,6 @@ public partial class UserLocation
 
     public virtual Province IdProvinceNavigation { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual ICollection<UserProfile> UserProfiles { get; } = new List<UserProfile>();
 }
