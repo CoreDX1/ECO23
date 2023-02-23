@@ -15,8 +15,8 @@ builder.Services.AddCors(options =>
         {
             policy
                 .WithOrigins("http://localhost:5173") // TODO: Change to your domain
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+                .WithHeaders("application/json", "Accept") // TODO: Permitir todos los headers
+                .WithMethods("GET"); // TODO : Permiter todos los metodos
         }
     );
 });
