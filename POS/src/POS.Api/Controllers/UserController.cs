@@ -22,5 +22,14 @@ namespace POS.src.POS.Api.Controllers
             var response = await _app.ListSelectUser();
             return Ok(response);
         }
+
+        // * GET: api/User/{id} //
+        [HttpGet]
+        [Route("list/{id:int}")]
+        public async Task<IActionResult> GetUserById([FromRoute] int id)
+        {
+            var response = await _app.GetUserById(id);
+            return Ok(response);
+        }
     }
 }
