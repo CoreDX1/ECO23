@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { IUsuario } from './Interfaces/IUsuarios';
 import { useEffect, useState } from 'react';
 import './App.css'
@@ -8,7 +8,7 @@ function App() {
   const [user, setUser] = useState<IUsuario>();
 
   async function GetUser(): Promise<void> {
-    const { data } = await axios.get<IUsuario>('http://localhost:5086/api/User/list');
+    const { data } : AxiosResponse<IUsuario> = await axios.get('http://localhost:5086/api/User/list');
     setUser(data);
   }
 
