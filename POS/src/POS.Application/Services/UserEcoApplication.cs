@@ -15,13 +15,31 @@ public class UserEcoApplication : IUserEcoApplication
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<BaseResponse<dynamic>> ListSelectUser()
+    public async Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser()
     {
-        var response = new BaseResponse<dynamic>();
+        var response = new BaseResponse<IEnumerable<UserEco>>();
         var user = await _unitOfWork.UserEco.ListSelectUser();
         if (user is null)
         {
+            response.IsSuccess = false;
+            response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
+        }
+        else
+        {
             response.IsSuccess = true;
+            response.Data = user;
+            response.Message = ReplyMessage.MESSAGE_QUERY;
+        }
+        return response;
+    }
+
+    public async Task<BaseResponse<UserEco>> GetUserById(int id)
+    {
+        var response = new BaseResponse<UserEco>();
+        UserEco user = await _unitOfWork.UserEco.UserById(id);
+        if (user is null)
+        {
+            response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
         }
         else
