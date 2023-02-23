@@ -1,4 +1,6 @@
-﻿namespace POS.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace POS.Domain.Entities;
 
 public partial class Province
 {
@@ -6,5 +8,6 @@ public partial class Province
 
     public string Name { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual ICollection<UserLocation> UserLocations { get; } = new List<UserLocation>();
 }
