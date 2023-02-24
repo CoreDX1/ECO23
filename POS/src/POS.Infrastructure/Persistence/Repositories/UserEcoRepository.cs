@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.DataContext;
 using POS.Infrastructure.Persistence.Interfaces;
+using POS.Utilities.Static;
 
 namespace POS.Infrastructure.Persistence.Repositories;
 
@@ -17,7 +18,8 @@ public class UserEcoRepository : IUserEcoRepository
     public async Task<IEnumerable<UserEco>> ListSelectUser()
     {
         IEnumerable<UserEco> user = await _context.UserEco
-            .Include(u => u.UserProfile)
+            .Include<UserEco, UserPermission>(e => e.UserPermissions)
+            .Include<UserEco, UserProfile>(u => u.UserProfile)
             .ThenInclude(p => p.IdLocationNavigation)
             .ThenInclude(l => l.IdProvinceNavigation)
             .AsNoTracking()
@@ -33,50 +35,24 @@ public class UserEcoRepository : IUserEcoRepository
         return user!;
     }
 
-    public async Task<bool> CreateUserEco(
-        UserEco userEco,
-        UserLocation userLocation,
-        UserProfile userProfile
-    )
+    public async Task<bool> CreateUserEco(UserComplete userComplete)
     {
-        await isValidateEmail(userEco);
-        UserEco newUser = new UserEco
+        await isValidateEmail(userComplete.Email!);
+        var user = new UserEco
         {
-            Name = userEco.Name,
-            CellPhone = userEco.CellPhone,
-            PaternalLastName = userEco.PaternalLastName,
-            MaternalLastName = userEco.MaternalLastName,
-            UserPermissions = userEco.UserPermissions
+            Name = userComplete.Name!,
+            PaternalLastName = userComplete.PaternalLastName!,
+            MaternalLastName = userComplete.MaternalLastName!,
+            CellPhone = userComplete.CellPhone!,
         };
-
-        UserLocation newLocation = new UserLocation
-        {
-            Street = userLocation.Street,
-            HouseNumber = userLocation.HouseNumber,
-            IdProvince = userLocation.IdProvince, // INFO : Foreign Key de UserProvince
-        };
-
-        UserProfile newProfile = new UserProfile
-        {
-            Email = userProfile.Email,
-            UserPassword = userProfile.UserPassword,
-            CreationDate = DateTime.Now,
-            IdLocation = newLocation.IdLocation, // INFO : Foreign Key de UserLocation
-            IdUser = newUser.IdUser, // INFO : Foreign Key de UserProfile
-        };
-
-        await _context.UserEco.AddAsync(newUser);
-        await _context.UserLocation.AddAsync(newLocation);
-        await _context.UserProfile.AddAsync(newProfile);
-        await _context.SaveChangesAsync();
-        return true;
+        await _context.UserEco.AddAsync(user);
+        var result = await _context.SaveChangesAsync();
+        return result > 0;
     }
 
-    private async Task<bool> isValidateEmail(UserEco data)
+    private async Task<bool> isValidateEmail(string email)
     {
-        bool user = await _context.UserEco
-            .Where(x => x.UserProfile.Email.Equals(data.UserProfile.Email))
-            .AnyAsync();
+        bool user = await _context.UserProfile.Where(x => x.Email.Equals(email)).AnyAsync();
 
         return user;
     }
