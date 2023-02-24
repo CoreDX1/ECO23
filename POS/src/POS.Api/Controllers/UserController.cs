@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
+using POS.Utilities.Static;
 
 namespace POS.src.POS.Api.Controllers
 {
@@ -29,6 +31,15 @@ namespace POS.src.POS.Api.Controllers
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             var response = await _app.GetUserById(id);
+            return Ok(response);
+        }
+
+        // * POST: api/User/register //
+        [HttpPost]
+        [Route("Register/User")]
+        public async Task<IActionResult> RegisterUser([FromBody] UserComplete user)
+        {
+            var response = await _app.RegisterUser(user);
             return Ok(response);
         }
     }
