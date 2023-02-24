@@ -1,4 +1,3 @@
-using AutoMapper;
 using POS.Application.Commons.Base;
 using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
