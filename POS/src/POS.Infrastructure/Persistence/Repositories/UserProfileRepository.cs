@@ -27,6 +27,8 @@ public class UserProfileRepository : IUserProfileRepository
             where n.Street == userProfile.Street && n.HouseNumber == userProfile.HouseNumber
             select n.IdLocation
         ).FirstOrDefault();
+        if (user > 0 && location > 0)
+            return false;
 
         var profile = new UserProfile
         {
