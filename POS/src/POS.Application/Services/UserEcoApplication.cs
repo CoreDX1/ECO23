@@ -1,19 +1,22 @@
+using FluentValidation;
 using POS.Application.Commons.Base;
-using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.Interfaces;
 using POS.Utilities.Static;
+using BC = BCrypt.Net.BCrypt;
 
 namespace POS.Application.Services;
 
 public class UserEcoApplication : IUserEcoApplication
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UserComplete> _validator;
 
-    public UserEcoApplication(IUnitOfWork unitOfWork)
+    public UserEcoApplication(IUnitOfWork unitOfWork, IValidator<UserComplete> validator)
     {
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
     public async Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser()
@@ -55,9 +58,18 @@ public class UserEcoApplication : IUserEcoApplication
     public async Task<BaseResponse<bool>> RegisterUser(UserComplete requestDto)
     {
         var response = new BaseResponse<bool>();
-        response.Data = await _unitOfWork.UserEco.CreateUserEco(requestDto);
+        var userV = await _validator.ValidateAsync(requestDto);
+        if (!userV.IsValid)
+        {
+            response.IsSuccess = false;
+            response.Message = ReplyMessage.MESSAGE_VALIDATE;
+            response.Errors = userV.Errors;
+            return response;
+        }
+        await _unitOfWork.UserEco.CreateUserEco(requestDto);
         await _unitOfWork.UserLocation.CreateUserLocation(requestDto);
-        await _unitOfWork.UserProfile.CreateUserProfile(requestDto);
+        requestDto.UserPassword = BC.HashPassword(requestDto.UserPassword);
+        response.Data = await _unitOfWork.UserProfile.CreateUserProfile(requestDto);
         if (!response.Data)
         {
             response.IsSuccess = false;
