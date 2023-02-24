@@ -1,24 +1,21 @@
-using POS.Utilities.Static;
-
 namespace POS.Application.DTO.Request;
 
 public class UserEcoRequestDto
 {
-    // TODO : User Table //
-    public string Name { get; set; } = null!;
-    public string PaternalLastName { get; set; } = null!;
+    // INFO : Profile Table //
+    public string? UserPassword { get; set; }
+    public string? Email { get; set; }
+    public DateTime CreationDate { get; set; }
+
+    // INFO : User Table //
+    public string? Name { get; set; }
+    public string? PaternalLastName { get; set; }
     public string? MaternalLastName { get; set; }
-    public string CellPhone { get; set; } = null!;
+    public string? CellPhone { get; set; }
     public short IdUserProfile { get; set; }
 
-    // TODO : Localidad Tab //
-    public short IdLocation { get; set; }
-    public string Street { get; set; } = null!;
+    // INFO : Localidad Table //
+    public string? Street { get; set; }
     public int HouseNumber { get; set; }
-    public ProvinceEnum IdProvince { get; set; }
-
-    // TODO : Profile Table //
-    public string UserPassword { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public DateTime CreationDate { get; } = DateTime.Now;
+    public short IdProvince { get; set; }
 }
