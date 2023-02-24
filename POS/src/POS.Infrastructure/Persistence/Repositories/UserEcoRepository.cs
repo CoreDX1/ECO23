@@ -16,44 +16,14 @@ public class UserEcoRepository : IUserEcoRepository
 
     public async Task<IEnumerable<UserEco>> ListSelectUser()
     {
-        IEnumerable<UserEco> fusion = await (
-            from user in _context.UserEco
-            join location in _context.UserLocation
-                on user.UserProfile.IdLocation equals location.IdLocation
-            join profile in _context.UserProfile on user.IdUser equals profile.IdUser
-            join province in _context.Province on location.IdProvince equals province.IdProvince
-            select new UserEco
-            {
-                IdUser = user.IdUser,
-                Name = user.Name,
-                PaternalLastName = user.PaternalLastName,
-                MaternalLastName = user.MaternalLastName,
-                CellPhone = user.CellPhone,
-                UserPermissions = user.UserPermissions,
-                UserProfile = new UserProfile
-                {
-                    IdUserProfile = profile.IdUserProfile,
-                    IdLocation = location.IdLocation,
-                    IdUser = profile.IdUser,
-                    Email = profile.Email,
-                    UserPassword = profile.UserPassword,
-                    CreationDate = profile.CreationDate,
-                    IdLocationNavigation = new UserLocation
-                    {
-                        Street = location.Street,
-                        HouseNumber = location.HouseNumber,
-                        IdProvince = location.IdProvince,
-                        IdProvinceNavigation = new Province
-                        {
-                            IdProvince = location.IdProvince,
-                            Name = province.Name
-                        }
-                    }
-                }
-            }
-        ).AsNoTracking().ToListAsync();
+        IEnumerable<UserEco> user = await _context.UserEco
+            .Include(u => u.UserProfile)
+            .ThenInclude(p => p.IdLocationNavigation)
+            .ThenInclude(l => l.IdProvinceNavigation)
+            .AsNoTracking()
+            .ToListAsync();
 
-        return fusion;
+        return user;
     }
 
     public async Task<UserEco> UserById(int id)
@@ -63,10 +33,41 @@ public class UserEcoRepository : IUserEcoRepository
         return user!;
     }
 
-    public async Task<bool> CreateUserEco(UserEco userEco)
+    public async Task<bool> CreateUserEco(
+        UserEco userEco,
+        UserLocation userLocation,
+        UserProfile userProfile
+    )
     {
         await isValidateEmail(userEco);
-        await _context.UserEco.AddAsync(userEco);
+        UserEco newUser = new UserEco
+        {
+            Name = userEco.Name,
+            CellPhone = userEco.CellPhone,
+            PaternalLastName = userEco.PaternalLastName,
+            MaternalLastName = userEco.MaternalLastName,
+            UserPermissions = userEco.UserPermissions
+        };
+
+        UserLocation newLocation = new UserLocation
+        {
+            Street = userLocation.Street,
+            HouseNumber = userLocation.HouseNumber,
+            IdProvince = userLocation.IdProvince, // INFO : Foreign Key de UserProvince
+        };
+
+        UserProfile newProfile = new UserProfile
+        {
+            Email = userProfile.Email,
+            UserPassword = userProfile.UserPassword,
+            CreationDate = DateTime.Now,
+            IdLocation = newLocation.IdLocation, // INFO : Foreign Key de UserLocation
+            IdUser = newUser.IdUser, // INFO : Foreign Key de UserProfile
+        };
+
+        await _context.UserEco.AddAsync(newUser);
+        await _context.UserLocation.AddAsync(newLocation);
+        await _context.UserProfile.AddAsync(newProfile);
         await _context.SaveChangesAsync();
         return true;
     }
