@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
 using POS.Utilities.Static;
 
@@ -16,8 +15,7 @@ namespace POS.src.POS.Api.Controllers
             _app = app;
         }
 
-        // * GET: api/User/list //
-        [HttpGet]
+        [HttpGet] // * GET: api/User/list //
         [Route("list")]
         public async Task<IActionResult> ListSelectUser()
         {
@@ -25,8 +23,11 @@ namespace POS.src.POS.Api.Controllers
             return Ok(response);
         }
 
-        // * GET: api/User/{id} //
-        [HttpGet]
+        /// <summary>
+        /// Search user by id
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpGet] // * GET: api/User/{id} //
         [Route("list/{id:int}")]
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
@@ -37,6 +38,7 @@ namespace POS.src.POS.Api.Controllers
         // * POST: api/User/register //
         [HttpPost]
         [Route("Register/User")]
+        [ProducesDefaultResponseType, Produces("application/json")]
         public async Task<IActionResult> RegisterUser([FromBody] UserComplete user)
         {
             var response = await _app.RegisterUser(user);
