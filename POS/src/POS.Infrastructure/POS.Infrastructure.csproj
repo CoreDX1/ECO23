@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\POS.Domain\POS.Domain.csproj" />
+    <ProjectReference Include="..\POS.Utilities\POS.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
