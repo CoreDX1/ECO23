@@ -4,6 +4,7 @@ public class ReplyMessage
 {
     public const string MESSAGE_QUERY = "Consulta exitosa";
     public const string MESSAGE_VALIDATE_EMAIL = "El email ya existe";
+    public const string MESSAGE_VALIDATE_PASSWORD = "Las contraseñas no coinciden";
     public const string MESSAGE_QUERY_EMTY = "No se encontraron registros";
     public const string MESSAGE_SAVE = "Se registro correctamente";
     public const string MESSAGE_UPDATE = "Se actualizo correctamente";
