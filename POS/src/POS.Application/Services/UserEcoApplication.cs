@@ -1,4 +1,6 @@
+using AutoMapper;
 using POS.Application.Commons.Base;
+using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.Interfaces;
@@ -18,7 +20,7 @@ public class UserEcoApplication : IUserEcoApplication
     public async Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser()
     {
         var response = new BaseResponse<IEnumerable<UserEco>>();
-        var user = await _unitOfWork.UserEco.ListSelectUser();
+        IEnumerable<UserEco> user = await _unitOfWork.UserEco.ListSelectUser();
         if (user is null)
         {
             response.IsSuccess = false;
@@ -47,6 +49,25 @@ public class UserEcoApplication : IUserEcoApplication
             response.IsSuccess = true;
             response.Data = user;
             response.Message = ReplyMessage.MESSAGE_QUERY;
+        }
+        return response;
+    }
+
+    public async Task<BaseResponse<bool>> RegisterUser(UserComplete requestDto)
+    {
+        var response = new BaseResponse<bool>();
+        response.Data = await _unitOfWork.UserEco.CreateUserEco(requestDto);
+        await _unitOfWork.UserLocation.CreateUserLocation(requestDto);
+        await _unitOfWork.UserProfile.CreateUserProfile(requestDto);
+        if (!response.Data)
+        {
+            response.IsSuccess = false;
+            response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
+        }
+        else
+        {
+            response.IsSuccess = true;
+            response.Message = ReplyMessage.MESSAGE_SAVE;
         }
         return response;
     }
