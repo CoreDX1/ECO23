@@ -1,5 +1,7 @@
+using AutoMapper;
 using FluentValidation;
 using POS.Application.Commons.Base;
+using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.Interfaces;
@@ -11,12 +13,18 @@ namespace POS.Application.Services;
 public class UserEcoApplication : IUserEcoApplication
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<UserComplete> _validator;
+    private readonly IValidator<UserEcoRequestDto> _validator;
+    private readonly IMapper _mapper;
 
-    public UserEcoApplication(IUnitOfWork unitOfWork, IValidator<UserComplete> validator)
+    public UserEcoApplication(
+        IUnitOfWork unitOfWork,
+        IValidator<UserEcoRequestDto> validator,
+        IMapper mapper
+    )
     {
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _mapper = mapper;
     }
 
     public async Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser()
@@ -55,10 +63,10 @@ public class UserEcoApplication : IUserEcoApplication
         return response;
     }
 
-    public async Task<BaseResponse<bool>> RegisterUser(UserComplete requestDto)
+    public async Task<BaseResponse<bool>> RegisterUser(UserEcoRequestDto addUser)
     {
         var response = new BaseResponse<bool>();
-        var userV = await _validator.ValidateAsync(requestDto);
+        var userV = await _validator.ValidateAsync(addUser);
         if (!userV.IsValid)
         {
             response.IsSuccess = false;
@@ -66,10 +74,26 @@ public class UserEcoApplication : IUserEcoApplication
             response.Errors = userV.Errors;
             return response;
         }
-        await _unitOfWork.UserEco.CreateUserEco(requestDto);
-        await _unitOfWork.UserLocation.CreateUserLocation(requestDto);
-        requestDto.UserPassword = BC.HashPassword(requestDto.UserPassword);
-        response.Data = await _unitOfWork.UserProfile.CreateUserProfile(requestDto);
+        // INFO : Crea el Usuario
+        UserEco newUser = _mapper.Map<UserEco>(addUser);
+        var useriD = await _unitOfWork.UserEco.CreateUserEco(newUser);
+
+        // INFO : Crea el Localidad
+        UserLocation newLocation = _mapper.Map<UserLocation>(addUser);
+        var locationiD = await _unitOfWork.UserLocation.CreateUserLocation(newLocation);
+
+        // INFO : Crea el Profile
+        UserProfile newProfile = _mapper.Map<UserProfile>(addUser);
+
+        // INFO : Les asigna el Id
+        newProfile.IdUser = useriD;
+        newProfile.IdLocation = locationiD;
+
+        // INFO : Se Hash la contraseña
+        newProfile.UserPassword = BC.HashPassword(newProfile.UserPassword);
+
+        // INFO : Se crea el Guarda
+        response.Data = await _unitOfWork.UserProfile.CreateUserProfile(newProfile);
         if (!response.Data)
         {
             response.IsSuccess = false;
