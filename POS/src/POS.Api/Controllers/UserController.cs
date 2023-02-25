@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
 using POS.Utilities.Static;
 
@@ -62,7 +63,7 @@ namespace POS.src.POS.Api.Controllers
         [HttpPost] // * POST: api/User/register
         [Route("Register/User")]
         [ProducesDefaultResponseType, Produces("application/json")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserComplete user)
+        public async Task<IActionResult> RegisterUser([FromBody] UserEcoRequestDto user)
         {
             var response = await _app.RegisterUser(user);
             return Ok(response);
