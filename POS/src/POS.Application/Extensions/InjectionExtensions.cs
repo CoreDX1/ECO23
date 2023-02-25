@@ -1,6 +1,8 @@
+using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
 using POS.Application.Services;
 using POS.Application.Validators;
@@ -16,8 +18,9 @@ public static class InjectionExtensions
     )
     {
         services.AddSingleton(configuration);
-        services.AddScoped<IValidator<UserComplete>, UserValidatorRules>();
+        services.AddScoped<IValidator<UserEcoRequestDto>, UserValidatorRules>();
         services.AddScoped<IUserEcoApplication, UserEcoApplication>();
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         return services;
     }
 }
