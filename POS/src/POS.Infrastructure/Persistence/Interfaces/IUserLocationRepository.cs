@@ -5,5 +5,5 @@ namespace POS.Infrastructure.Persistence.Interfaces;
 
 public interface IUserLocationRepository
 {
-    Task<bool> CreateUserLocation(UserComplete userLocation);
+    Task<short> CreateUserLocation(UserLocation addLocation);
 }
