@@ -14,7 +14,7 @@ public partial class UserProfile
 
     public string Email { get; set; } = null!;
 
-    public DateTime CreationDate { get; set; }
+    public DateTime CreationDate { get; set; } = DateTime.Now;
 
     public virtual UserLocation IdLocationNavigation { get; set; } = null!;
 
