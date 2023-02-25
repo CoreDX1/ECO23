@@ -14,16 +14,10 @@ public class UserLocationRepository : IUserLocationRepository
         _context = context;
     }
 
-    public async Task<bool> CreateUserLocation(UserComplete userLocation)
+    public async Task<short> CreateUserLocation(UserLocation addLocation)
     {
-        var location = new UserLocation
-        {
-            Street = userLocation.Street!,
-            HouseNumber = userLocation.HouseNumber,
-            IdProvince = userLocation.IdProvince,
-        };
-        await _context.UserLocation.AddAsync(location);
+        await _context.UserLocation.AddAsync(addLocation);
         var result = await _context.SaveChangesAsync();
-        return result > 0;
+        return addLocation.IdLocation;
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.DataContext;
 using POS.Infrastructure.Persistence.Interfaces;
@@ -35,25 +36,16 @@ public class UserEcoRepository : IUserEcoRepository
         return user!;
     }
 
-    public async Task<bool> CreateUserEco(UserComplete userComplete)
+    public async Task<short> CreateUserEco(UserEco addUser)
     {
-        await isValidateEmail(userComplete.Email!);
-        var user = new UserEco
-        {
-            Name = userComplete.Name!,
-            PaternalLastName = userComplete.PaternalLastName!,
-            MaternalLastName = userComplete.MaternalLastName!,
-            CellPhone = userComplete.CellPhone!,
-        };
-        await _context.UserEco.AddAsync(user);
-        var result = await _context.SaveChangesAsync();
-        return result > 0;
+        await _context.UserEco.AddAsync(addUser);
+        await _context.SaveChangesAsync();
+        return addUser.IdUser;
     }
 
     private async Task<bool> isValidateEmail(string email)
     {
         bool user = await _context.UserProfile.Where(x => x.Email.Equals(email)).AnyAsync();
-
         return user;
     }
 
