@@ -8,12 +8,14 @@ public class UserComplete
     public string? UserPassword { get; set; }
     public string? ReplyPassword { get; set; }
     public string? Email { get; set; }
+    public string? Name { get; set; }
+
+    [JsonIgnore]
     public DateTime CreationDate { get; set; }
 
     // INFO : User Table //
     [JsonIgnore]
     public short IdUser { get; set; }
-    public string? Name { get; set; }
     public string? PaternalLastName { get; set; }
     public string? MaternalLastName { get; set; }
     public string? CellPhone { get; set; }
