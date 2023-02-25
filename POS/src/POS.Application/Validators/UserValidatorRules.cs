@@ -1,9 +1,9 @@
 using FluentValidation;
-using POS.Utilities.Static;
+using POS.Application.DTO.Request;
 
 namespace POS.Application.Validators;
 
-public class UserValidatorRules : AbstractValidator<UserComplete>
+public class UserValidatorRules : AbstractValidator<UserEcoRequestDto>
 {
     public UserValidatorRules()
     {
