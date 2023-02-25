@@ -15,6 +15,9 @@ namespace POS.src.POS.Api.Controllers
             _app = app;
         }
 
+        /// <summary>
+        /// List all users
+        /// </summary>
         [HttpGet] // * GET: api/User/list //
         [Route("list")]
         public async Task<IActionResult> ListSelectUser()
@@ -35,8 +38,28 @@ namespace POS.src.POS.Api.Controllers
             return Ok(response);
         }
 
-        // * POST: api/User/register //
-        [HttpPost]
+        /// <summary>
+        /// Create user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///         POST api/User/Register
+        ///         {
+        ///             "userPassword": "Index123",
+        ///             "replyPassword": "Index123",
+        ///             "email": "camilo@gmail.com",
+        ///             "name": "Camilo",
+        ///             "paternalLastName": "Torres",
+        ///             "maternalLastName": "Altaraz",
+        ///             "cellPhone": "154728313",
+        ///             "street": "Joser Ignacio",
+        ///             "houseNumber": 1592,
+        ///             "idProvince": 2
+        ///         }
+        ///
+        ///</remarks>
+        [HttpPost] // * POST: api/User/register
         [Route("Register/User")]
         [ProducesDefaultResponseType, Produces("application/json")]
         public async Task<IActionResult> RegisterUser([FromBody] UserComplete user)
