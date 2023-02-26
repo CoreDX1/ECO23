@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using POS.Utilities.Static;
 
 namespace POS.Application.DTO.Request;
 
@@ -28,5 +29,5 @@ public class UserEcoRequestDto
     public short IdLocation { get; set; }
     public string? Street { get; set; }
     public int HouseNumber { get; set; }
-    public short IdProvince { get; set; }
+    public ProvinceEnum IdProvince { get; set; }
 }
