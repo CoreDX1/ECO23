@@ -9,5 +9,8 @@ public class UserEcoMappingsProfile : Profile
     public UserEcoMappingsProfile()
     {
         CreateMap<UserEcoRequestDto, UserEco>();
+        CreateMap<UserEcoRequestDto, UserLocation>()
+            .ForMember(dest => dest.IdProvince, opt => opt.MapFrom(src => (short)src.IdProvince));
+        CreateMap<UserEcoRequestDto, UserProfile>();
     }
 }
