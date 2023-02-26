@@ -1,5 +1,6 @@
 using FluentValidation;
 using POS.Application.DTO.Request;
+using POS.Utilities.Static;
 
 namespace POS.Application.Validators;
 
