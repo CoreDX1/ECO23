@@ -82,22 +82,15 @@ public class UserEcoApplication : IUserEcoApplication
         UserLocation newLocation = _mapper.Map<UserLocation>(addUser);
         var locationiD = await _unitOfWork.UserLocation.CreateUserLocation(newLocation);
 
-        // INFO : Crea el Profile
         UserProfile newProfile = _mapper.Map<UserProfile>(addUser);
-
-        // INFO : Les asigna el Id
         newProfile.IdUser = useriD;
         newProfile.IdLocation = locationiD;
-
-        // INFO : Se Hash la contraseña
         newProfile.UserPassword = BC.HashPassword(newProfile.UserPassword);
-
-        // INFO : Se crea el Guarda
         response.Data = await _unitOfWork.UserProfile.CreateUserProfile(newProfile);
         if (!response.Data)
         {
             response.IsSuccess = false;
-            response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
+            response.Message = ReplyMessage.MESSAGE_VALIDATE_EMAIL;
         }
         else
         {
