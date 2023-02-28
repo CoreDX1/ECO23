@@ -1,7 +1,9 @@
+using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using FluentValidation;
 using POS.Application.Commons.Base;
 using POS.Application.DTO.Request;
+using POS.Application.DTO.Response;
 using POS.Application.Interfaces;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.Interfaces;
@@ -41,9 +43,12 @@ public class UserProfileApplication : IUserProfileApplication
         {
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_VALIDATE;
-            response.Errors = validate.Errors;
+            response.Errors = validate.Errors.Select(
+                x => new ErrorsResponseDto { ErrorMessage = x.ErrorMessage }
+            );
             return response;
         }
+
         // INFO : Creando el usuario
         var user = await _User.RegisterUser(addUser);
 
