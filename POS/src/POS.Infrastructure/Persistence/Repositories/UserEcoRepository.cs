@@ -36,14 +36,14 @@ public class UserEcoRepository : IUserEcoRepository
         return user!;
     }
 
-    public async Task<short> CreateUserEco(UserEco addUser)
+    public async Task<UserEco> CreateUserEco(UserEco addUser)
     {
         await _context.UserEco.AddAsync(addUser);
         await _context.SaveChangesAsync();
-        return addUser.IdUser;
+        return addUser;
     }
 
-    private async Task<bool> isValidateEmail(string email)
+    public async Task<bool> isValidateEmail(string email)
     {
         bool user = await _context.UserProfile.Where(x => x.Email.Equals(email)).AnyAsync();
         return user;
