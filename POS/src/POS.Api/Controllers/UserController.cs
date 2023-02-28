@@ -32,7 +32,7 @@ namespace POS.src.POS.Api.Controllers
         /// Search user by id
         /// </summary>
         /// <param name="id"></param>
-        [HttpGet] // * GET: api/User/{id} //
+        [HttpGet] // * GET: api/User/list/{id}
         [Route("list/{id:int}")]
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
@@ -61,7 +61,7 @@ namespace POS.src.POS.Api.Controllers
         ///         }
         ///
         ///</remarks>
-        [HttpPost] // * POST: api/User/register
+        [HttpPost] // * POST: api/User/Register/User
         [Route("Register/User")]
         [ProducesDefaultResponseType, Produces("application/json")]
         public async Task<IActionResult> RegisterUser([FromBody] UserEcoRequestDto user)
