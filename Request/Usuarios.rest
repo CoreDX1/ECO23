@@ -1,0 +1,25 @@
+@host = http://localhost:5086/api/User
+// Listar todos los usuarios
+GET {{host}}/list
+
+###
+// Buscar por id
+GET {{host}}/list/50
+###
+// Agregar Usuario
+POST {{host}}/Register/User
+Content-Type: application/json
+
+{
+  "userPassword": "index",
+  "replyPassword": "index",
+  "email": "juan@gmail.com",
+  "name": "Juan",
+  "paternalLastName": "Alrazas",
+  "maternalLastName": "Azul",
+  "cellPhone": "12541245",
+  "street": "Av. Rivadavia",
+  "houseNumber": 3415,
+  "idProvince": 5
+}
+
