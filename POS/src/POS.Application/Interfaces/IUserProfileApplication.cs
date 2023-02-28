@@ -5,5 +5,5 @@ namespace POS.Application.Interfaces;
 
 public interface IUserProfileApplication
 {
-    Task<BaseResponse<bool>> RegisterUser(UserEcoRequestDto addUser);
+    Task<BaseResponse<bool>> RegisterProfile(UserEcoRequestDto addUser);
 }
