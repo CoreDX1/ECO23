@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.DataContext;
 using POS.Infrastructure.Persistence.Interfaces;
-using POS.Utilities.Static;
 
 namespace POS.Infrastructure.Persistence.Repositories;
 
@@ -15,18 +14,25 @@ public class UserProfileRepository : IUserProfileRepository
         _context = context;
     }
 
-    public async Task<bool> CreateUserProfile(UserProfile addProfile)
+    public async Task<bool> CreateUserProfile(
+        UserProfile addProfile,
+        short idLocation,
+        short idUser
+    )
     {
-        bool isEmailValidate = await isValidateEmail(addProfile.Email);
-        if (isEmailValidate)
-            return false;
+        addProfile.IdLocation = idLocation;
+        addProfile.IdUser = idUser;
+        addProfile.CreationDate = DateTime.Now;
         await _context.UserProfile.AddAsync(addProfile);
         var result = await _context.SaveChangesAsync();
         return result > 0;
     }
 
-    private async Task<bool> isValidateEmail(string email)
+    public async Task<UserProfile> isValidateEmail(string email)
     {
-        return await _context.UserProfile.AnyAsync(x => x.Email.Equals(email));
+        var isMail = await _context.UserProfile
+            .Where(x => x.Email.Equals(email))
+            .SingleOrDefaultAsync();
+        return isMail!;
     }
 }
