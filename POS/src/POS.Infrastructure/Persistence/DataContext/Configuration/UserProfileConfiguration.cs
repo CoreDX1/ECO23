@@ -8,11 +8,11 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
 {
     public void Configure(EntityTypeBuilder<UserProfile> builder)
     {
-        builder.HasKey(e => e.IdUserProfile).HasName("user_profile_pkey");
+        builder.HasKey(e => e.Id).HasName("user_profile_pkey");
 
         builder.ToTable("user_profile");
 
-        builder.Property(e => e.IdUserProfile).HasColumnName("id_user_profile");
+        builder.Property(e => e.Id).HasColumnName("id_user_profile");
         builder
             .Property(e => e.CreationDate)
             .HasColumnType("timestamp without time zone")

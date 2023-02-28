@@ -8,12 +8,12 @@ public class UserLocationConfiguration : IEntityTypeConfiguration<UserLocation>
 {
     public void Configure(EntityTypeBuilder<UserLocation> builder)
     {
-        builder.HasKey(e => e.IdLocation).HasName("user_location_pkey");
+        builder.HasKey(e => e.Id).HasName("user_location_pkey");
 
         builder.ToTable("user_location");
 
         builder
-            .Property(e => e.IdLocation)
+            .Property(e => e.Id)
             .HasDefaultValueSql("nextval('localidad_id_localidad_seq'::regclass)")
             .HasColumnName("id_location");
         builder.Property(e => e.HouseNumber).HasColumnName("house_number");

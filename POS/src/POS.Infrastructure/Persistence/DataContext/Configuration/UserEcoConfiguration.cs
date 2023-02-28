@@ -8,10 +8,10 @@ public class UserEcoConfiguration : IEntityTypeConfiguration<UserEco>
 {
     public void Configure(EntityTypeBuilder<UserEco> builder)
     {
-        builder.HasKey(e => e.IdUser).HasName("user_eco_pkey");
+        builder.HasKey(e => e.Id).HasName("user_eco_pkey");
         builder.ToTable("user_eco");
 
-        builder.Property(e => e.IdUser).HasColumnName("id_user");
+        builder.Property(e => e.Id).HasColumnName("id_user");
         builder.Property(e => e.CellPhone).HasMaxLength(10).HasColumnName("cell_phone");
         builder
             .Property(e => e.MaternalLastName)
