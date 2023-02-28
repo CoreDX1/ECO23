@@ -66,12 +66,12 @@ public class UserEcoApplication : IUserEcoApplication
     {
         var response = new BaseResponse<short>();
         UserEco newUser = _mapper.Map<UserEco>(addUser);
-        UserEco user = await _unitOfWork.UserEco.CreateUserEco(newUser);
+        UserEco user = await _unitOfWork.UserEco.Create(newUser);
         if (user is not null)
         {
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_SAVE;
-            response.Data = user.IdUser;
+            response.Data = user.Id;
         }
         return response;
     }
