@@ -8,5 +8,5 @@ public interface IUserEcoApplication
 {
     Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser();
     Task<BaseResponse<UserEco>> GetUserById(int id);
-    Task<BaseResponse<bool>> RegisterUser(UserEcoRequestDto addUser);
+    Task<BaseResponse<short>> RegisterUser(UserEcoRequestDto addUser);
 }
