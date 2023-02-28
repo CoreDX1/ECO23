@@ -9,5 +9,5 @@ public interface IUserEcoRepository
     public Task<UserEco> UserById(int id);
     public Task<bool> UpdateUserEco(UserEco userEco);
     public Task<bool> DeleteUserEco(int id);
-    public Task<short> CreateUserEco(UserEco addUser);
+    public Task<UserEco> CreateUserEco(UserEco addUser);
 }
