@@ -6,7 +6,6 @@ using POS.Application.Interfaces;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.Interfaces;
 using POS.Utilities.Static;
-using BC = BCrypt.Net.BCrypt;
 
 namespace POS.Application.Services;
 
@@ -63,39 +62,16 @@ public class UserEcoApplication : IUserEcoApplication
         return response;
     }
 
-    public async Task<BaseResponse<bool>> RegisterUser(UserEcoRequestDto addUser)
+    public async Task<BaseResponse<short>> RegisterUser(UserEcoRequestDto addUser)
     {
-        var response = new BaseResponse<bool>();
-        var userV = await _validator.ValidateAsync(addUser);
-        if (!userV.IsValid)
-        {
-            response.IsSuccess = false;
-            response.Message = ReplyMessage.MESSAGE_VALIDATE;
-            response.Errors = userV.Errors;
-            return response;
-        }
-        // INFO : Crea el Usuario
+        var response = new BaseResponse<short>();
         UserEco newUser = _mapper.Map<UserEco>(addUser);
-        var useriD = await _unitOfWork.UserEco.CreateUserEco(newUser);
-
-        // INFO : Crea el Localidad
-        UserLocation newLocation = _mapper.Map<UserLocation>(addUser);
-        var locationiD = await _unitOfWork.UserLocation.CreateUserLocation(newLocation);
-
-        UserProfile newProfile = _mapper.Map<UserProfile>(addUser);
-        newProfile.IdUser = useriD;
-        newProfile.IdLocation = locationiD;
-        newProfile.UserPassword = BC.HashPassword(newProfile.UserPassword);
-        response.Data = await _unitOfWork.UserProfile.CreateUserProfile(newProfile);
-        if (!response.Data)
-        {
-            response.IsSuccess = false;
-            response.Message = ReplyMessage.MESSAGE_VALIDATE_EMAIL;
-        }
-        else
+        UserEco user = await _unitOfWork.UserEco.CreateUserEco(newUser);
+        if (user is not null)
         {
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_SAVE;
+            response.Data = user.IdUser;
         }
         return response;
     }
