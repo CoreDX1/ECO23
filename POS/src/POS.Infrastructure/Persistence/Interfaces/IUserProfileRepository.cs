@@ -1,8 +1,6 @@
-using POS.Utilities.Static;
+using POS.Domain.Entities;
+using POS.Infrastructure.Persistence.Interfaces.GenericRepository;
 
 namespace POS.Infrastructure.Persistence.Interfaces;
 
-public interface IUserProfileRepository
-{
-    Task<bool> CreateUserProfile(UserComplete userProfile);
-}
+public interface IUserProfileRepository : IGenericRepository<UserProfile> { }

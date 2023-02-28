@@ -1,0 +1,6 @@
+# Mejoras
+1. Validar de que las tablas sea hallan creado de forma correcta
+2. El Email que unico para cada usuario
+
+
+# Errores

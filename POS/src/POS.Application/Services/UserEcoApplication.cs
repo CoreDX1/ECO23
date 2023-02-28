@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentValidation;
 using POS.Application.Commons.Base;
 using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
@@ -11,10 +12,18 @@ namespace POS.Application.Services;
 public class UserEcoApplication : IUserEcoApplication
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UserEcoRequestDto> _validator;
+    private readonly IMapper _mapper;
 
-    public UserEcoApplication(IUnitOfWork unitOfWork)
+    public UserEcoApplication(
+        IUnitOfWork unitOfWork,
+        IValidator<UserEcoRequestDto> validator,
+        IMapper mapper
+    )
     {
         _unitOfWork = unitOfWork;
+        _validator = validator;
+        _mapper = mapper;
     }
 
     public async Task<BaseResponse<IEnumerable<UserEco>>> ListSelectUser()
@@ -53,21 +62,16 @@ public class UserEcoApplication : IUserEcoApplication
         return response;
     }
 
-    public async Task<BaseResponse<bool>> RegisterUser(UserComplete requestDto)
+    public async Task<BaseResponse<short>> RegisterUser(UserEcoRequestDto addUser)
     {
-        var response = new BaseResponse<bool>();
-        response.Data = await _unitOfWork.UserEco.CreateUserEco(requestDto);
-        await _unitOfWork.UserLocation.CreateUserLocation(requestDto);
-        await _unitOfWork.UserProfile.CreateUserProfile(requestDto);
-        if (!response.Data)
-        {
-            response.IsSuccess = false;
-            response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
-        }
-        else
+        var response = new BaseResponse<short>();
+        UserEco newUser = _mapper.Map<UserEco>(addUser);
+        UserEco user = await _unitOfWork.UserEco.Create(newUser);
+        if (user is not null)
         {
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_SAVE;
+            response.Data = user.Id;
         }
         return response;
     }

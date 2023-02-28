@@ -2,10 +2,8 @@
 
 namespace POS.Domain.Entities;
 
-public partial class UserProfile
+public partial class UserProfile : BaseEntity
 {
-    public short IdUserProfile { get; set; }
-
     public short IdUser { get; set; }
 
     public short IdLocation { get; set; }

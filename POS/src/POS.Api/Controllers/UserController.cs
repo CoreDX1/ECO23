@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
-using POS.Utilities.Static;
 
 namespace POS.src.POS.Api.Controllers
 {
@@ -10,14 +9,18 @@ namespace POS.src.POS.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserEcoApplication _app;
+        private readonly IUserProfileApplication _appProfile;
 
-        public UserController(IUserEcoApplication app)
+        public UserController(IUserEcoApplication app, IUserProfileApplication appProfile)
         {
             _app = app;
+            _appProfile = appProfile;
         }
 
-        // * GET: api/User/list //
-        [HttpGet]
+        /// <summary>
+        /// List all users
+        /// </summary>
+        [HttpGet] // * GET: api/User/list //
         [Route("list")]
         public async Task<IActionResult> ListSelectUser()
         {
@@ -25,8 +28,11 @@ namespace POS.src.POS.Api.Controllers
             return Ok(response);
         }
 
-        // * GET: api/User/{id} //
-        [HttpGet]
+        /// <summary>
+        /// Search user by id
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpGet] // * GET: api/User/list/{id}
         [Route("list/{id:int}")]
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
@@ -34,12 +40,33 @@ namespace POS.src.POS.Api.Controllers
             return Ok(response);
         }
 
-        // * POST: api/User/register //
-        [HttpPost]
+        /// <summary>
+        /// Create user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///         POST api/User/Register
+        ///         {
+        ///             "userPassword": "Index123",
+        ///             "replyPassword": "Index123",
+        ///             "email": "camilo@gmail.com",
+        ///             "name": "Camilo",
+        ///             "paternalLastName": "Torres",
+        ///             "maternalLastName": "Altaraz",
+        ///             "cellPhone": "154728313",
+        ///             "street": "Joser Ignacio",
+        ///             "houseNumber": 1592,
+        ///             "idProvince": 2
+        ///         }
+        ///
+        ///</remarks>
+        [HttpPost] // * POST: api/User/Register/User
         [Route("Register/User")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserComplete user)
+        [ProducesDefaultResponseType, Produces("application/json")]
+        public async Task<IActionResult> RegisterUser([FromBody] UserEcoRequestDto user)
         {
-            var response = await _app.RegisterUser(user);
+            var response = await _appProfile.RegisterProfile(user);
             return Ok(response);
         }
     }

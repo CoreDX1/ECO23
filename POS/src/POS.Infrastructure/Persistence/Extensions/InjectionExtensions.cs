@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using POS.Infrastructure.Persistence.DataContext;
 using POS.Infrastructure.Persistence.Interfaces;
+using POS.Infrastructure.Persistence.Interfaces.GenericRepository;
 using POS.Infrastructure.Persistence.Repositories;
+using POS.Infrastructure.Persistence.Repositories.GenericRepository;
 
 namespace POS.Infrastructure.Persistence.Extensions;
 
@@ -24,6 +26,7 @@ public static class InjectionExtensions
             ServiceLifetime.Transient
         );
         services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         return services;
     }
 }

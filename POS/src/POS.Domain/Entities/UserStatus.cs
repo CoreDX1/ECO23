@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace POS.Domain.Entities;
+﻿namespace POS.Domain.Entities;
 
 public partial class UserStatus
 {
@@ -9,5 +6,6 @@ public partial class UserStatus
 
     public string Status { get; set; } = null!;
 
-    public virtual ICollection<UserPermission> UserPermissions { get; } = new List<UserPermission>();
+    public virtual ICollection<UserPermission> UserPermissions { get; } =
+        new List<UserPermission>();
 }
