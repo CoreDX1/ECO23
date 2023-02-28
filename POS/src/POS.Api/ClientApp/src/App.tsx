@@ -1,31 +1,41 @@
 import axios, { AxiosResponse } from 'axios';
-import { IUsuario } from './Interfaces/IUsuarios';
+import { IUserById} from './Interfaces/IUsuarios';
 import { useEffect, useState } from 'react';
 import './App.css'
 
 function App() {
 
-  const [user, setUser] = useState<IUsuario>();
+  const [user, setUser] = useState<IUserById>() ;
 
-  async function GetUser(): Promise<void> {
-    const { data } : AxiosResponse<IUsuario> = await axios.get('http://localhost:5086/api/User/list');
-    setUser(data);
+  async function GetUser(): Promise<IUserById> {
+    const { data }: AxiosResponse<IUserById> = await axios.get('http://localhost:5086/api/User/list/65');
+    
+    return data;
   }
+  console.log(user);
 
   useEffect(() => {
-    GetUser();
+    GetUser(
+    );
   }, [])
+
+  function RenderUser (){
+    return (
+      user.isSuccess ? (
+        <div>
+          <h1>{user.data.name}</h1>
+        </div>
+      ) : (
+        <div>
+          <h1>{user.message}</h1>
+        </div>
+      )
+    )
+  }
 
   return (
     <div>
-      <h1>Cantidad De Usuarios {user?.data.length}</h1>
-      {user?.message}
-      {user?.data.map(item => (
-        <div key={item.idUser}>
-          <p>Nombre del : {item.name} </p>
-          <p>Numero de la casa : {item.userProfile.location.street}</p>
-        </div>
-      ))}
+      {RenderUser()}
     </div>
   )
 }

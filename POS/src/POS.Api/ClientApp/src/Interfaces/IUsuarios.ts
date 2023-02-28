@@ -1,10 +1,16 @@
 export interface IUsuario {
     isSuccess: boolean;
     message:   string;
-    data:      Datum[];
+    data:      Data[];
 }
 
-export interface Datum {
+export interface IUserById{
+    isSuccess: boolean;
+    message:   string;
+    data:      Data;
+}
+
+export interface Data {
     idUser:           number;
     name:             string;
     paternalLastName: string;
