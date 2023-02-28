@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using POS.Application.DTO.Request;
 using POS.Application.Interfaces;
-using POS.Utilities.Static;
 
 namespace POS.src.POS.Api.Controllers
 {
@@ -10,10 +9,12 @@ namespace POS.src.POS.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserEcoApplication _app;
+        private readonly IUserProfileApplication _appProfile;
 
-        public UserController(IUserEcoApplication app)
+        public UserController(IUserEcoApplication app, IUserProfileApplication appProfile)
         {
             _app = app;
+            _appProfile = appProfile;
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace POS.src.POS.Api.Controllers
         [ProducesDefaultResponseType, Produces("application/json")]
         public async Task<IActionResult> RegisterUser([FromBody] UserEcoRequestDto user)
         {
-            var response = await _app.RegisterUser(user);
+            var response = await _appProfile.RegisterProfile(user);
             return Ok(response);
         }
     }
