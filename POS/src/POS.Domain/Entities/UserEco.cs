@@ -1,9 +1,7 @@
 ﻿namespace POS.Domain.Entities;
 
-public partial class UserEco
+public partial class UserEco : BaseEntity
 {
-    public short IdUser { get; set; }
-
     public string Name { get; set; } = null!;
 
     public string PaternalLastName { get; set; } = null!;

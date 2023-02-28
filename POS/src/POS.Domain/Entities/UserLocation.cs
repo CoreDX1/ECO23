@@ -2,10 +2,8 @@
 
 namespace POS.Domain.Entities;
 
-public partial class UserLocation
+public partial class UserLocation : BaseEntity
 {
-    public short IdLocation { get; set; }
-
     public string Street { get; set; } = null!;
 
     public int HouseNumber { get; set; }
