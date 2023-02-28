@@ -51,13 +51,12 @@ public class UserProfileApplication : IUserProfileApplication
         var location = await _Location.RegisterLocation(addUser);
 
         UserProfile data = _mapper.Map<UserProfile>(addUser);
+        data.IdLocation = location.Data;
+        data.IdUser = user.Data;
+
         data.UserPassword = BC.HashPassword(data.UserPassword);
-        response.Data = await _unitOfWork.UserProfile.CreateUserProfile(
-            data,
-            location.Data,
-            user.Data
-        );
-        if (!response.Data)
+        var profile = await _unitOfWork.UserProfile.Create(data);
+        if (profile is null)
         {
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;

@@ -24,11 +24,11 @@ public class UserLocationApplication : IUserLocationApplication
     {
         var response = new BaseResponse<short>();
         var location = _mapper.Map<UserLocation>(addLocation);
-        UserLocation data = await _unitOfWork.UserLocation.CreateUserLocation(location);
+        UserLocation data = await _unitOfWork.UserLocation.Create(location);
         if (data is not null)
         {
             response.IsSuccess = true;
-            response.Data = data.IdLocation;
+            response.Data = data.Id;
             response.Message = ReplyMessage.MESSAGE_QUERY;
         }
         return response;
