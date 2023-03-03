@@ -8,5 +8,15 @@ namespace POS.Infrastructure.Persistence.Repositories;
 
 public class UserProfileRepository : GenericRepository<UserProfile>, IUserProfileRepository
 {
-    public UserProfileRepository(Eco23Context context) : base(context) { }
+    private readonly Eco23Context _context;
+
+    public UserProfileRepository(Eco23Context context) : base(context)
+    {
+        _context = context;
+    }
+
+    public async Task<bool> IsValidateEmail(string email)
+    {
+        return await _context.UserProfile.AnyAsync(x => x.Email.Equals(email));
+    }
 }
