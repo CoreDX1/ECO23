@@ -34,7 +34,7 @@ namespace POS.src.POS.Api.Controllers
         /// <param name="id"></param>
         [HttpGet] // * GET: api/User/list/{id}
         [Route("list/{id:int}")]
-        public async Task<IActionResult> GetUserById([FromRoute] int id)
+        public async Task<IActionResult> GetUserById([FromRoute] short id)
         {
             var response = await _app.GetUserById(id);
             return Ok(response);
