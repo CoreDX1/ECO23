@@ -1,6 +1,8 @@
 using FluentValidation;
+using FluentValidation.Validators;
 using POS.Application.DTO.Request;
 using POS.Infrastructure.Persistence.Interfaces;
+using POS.Utilities.Static;
 
 namespace POS.Application.Validators;
 
@@ -24,6 +26,6 @@ public class UserValidatorRules : AbstractValidator<UserEcoRequestDto>
             .NotNull()
             .NotEmpty()
             .WithMessage("El email no puede estar vacio");
-        RuleFor(x => x.IdProvince).IsInEnum().WithMessage("El id de provincia no es valido");
+        RuleFor(x => x.IdProvince).IsInEnum().WithMessage("La provincia no es válida");
     }
 }
