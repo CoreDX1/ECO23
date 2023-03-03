@@ -6,5 +6,5 @@ namespace POS.Infrastructure.Persistence.Interfaces;
 public interface IUserEcoRepository : IGenericRepository<UserEco>
 {
     public Task<IEnumerable<UserEco>> ListSelectUser();
-    public Task<UserEco> UserById(int id);
+    public Task<UserEco> UserById(short id);
 }
