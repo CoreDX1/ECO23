@@ -1,8 +1,6 @@
 using FluentValidation;
-using FluentValidation.Validators;
 using POS.Application.DTO.Request;
 using POS.Infrastructure.Persistence.Interfaces;
-using POS.Utilities.Static;
 
 namespace POS.Application.Validators;
 
