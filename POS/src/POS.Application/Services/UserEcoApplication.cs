@@ -44,7 +44,7 @@ public class UserEcoApplication : IUserEcoApplication
         return response;
     }
 
-    public async Task<BaseResponse<UserEco>> GetUserById(int id)
+    public async Task<BaseResponse<UserEco>> GetUserById(short id)
     {
         var response = new BaseResponse<UserEco>();
         UserEco user = await _unitOfWork.UserEco.UserById(id);
