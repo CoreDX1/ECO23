@@ -1,5 +1,3 @@
-using POS.Application.DTO.Response;
-
 namespace POS.Application.Commons.Base;
 
 public class BaseResponse<T>
