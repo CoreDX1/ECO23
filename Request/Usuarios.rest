@@ -4,22 +4,22 @@ GET {{host}}/list
 
 ###
 // Buscar por id
-GET {{host}}/list/50
+GET {{host}}/list/65
 ###
 // Agregar Usuario
 POST {{host}}/Register/User
 Content-Type: application/json
 
 {
-  "userPassword": "index",
-  "replyPassword": "index",
-  "email": "juan@gmail.com",
+  "userPassword": "index1111",
+  "replyPassword": "index1111",
+  "email": "juaan@gmail.com",
   "name": "Juan",
   "paternalLastName": "Alrazas",
   "maternalLastName": "Azul",
   "cellPhone": "12541245",
   "street": "Av. Rivadavia",
   "houseNumber": 3415,
-  "idProvince": 5
+  "idProvince": 1
 }
 

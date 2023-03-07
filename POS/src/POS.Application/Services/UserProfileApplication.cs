@@ -36,14 +36,15 @@ public class UserProfileApplication : IUserProfileApplication
     public async Task<BaseResponse<bool>> RegisterProfile(UserEcoRequestDto addUser)
     {
         var response = new BaseResponse<bool>();
-        var validate = await _validator.ValidateAsync(addUser);
-        if (!validate.IsValid)
+        var valida = await IsValidateUserAsync(addUser);
+        if (valida.Count > 0)
         {
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_VALIDATE;
-            response.Errors = validate.Errors;
+            response.Errors = valida;
             return response;
         }
+
         // INFO : Creando el usuario
         var user = await _User.RegisterUser(addUser);
 
@@ -58,14 +59,21 @@ public class UserProfileApplication : IUserProfileApplication
         var profile = await _unitOfWork.UserProfile.Create(data);
         if (profile is null)
         {
-            response.IsSuccess = false;
-            response.Message = ReplyMessage.MESSAGE_QUERY_EMTY;
-        }
-        else
-        {
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_SAVE;
         }
         return response;
+    }
+
+    private async Task<List<string>> IsValidateUserAsync(UserEcoRequestDto User)
+    {
+        var validate = await _validator.ValidateAsync(User);
+        var email = await _unitOfWork.UserProfile.IsValidateEmail(User.Email!);
+        var errors = new List<string>();
+        if (email)
+            errors.Add(ReplyMessage.MESSAGE_VALIDATE_EMAIL);
+        if (!validate.IsValid)
+            errors.Add(validate.Errors.FirstOrDefault()?.ErrorMessage!);
+        return errors;
     }
 }

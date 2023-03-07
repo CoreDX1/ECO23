@@ -18,19 +18,20 @@ public class UserEcoRepository : GenericRepository<UserEco>, IUserEcoRepository
     public async Task<IEnumerable<UserEco>> ListSelectUser()
     {
         IEnumerable<UserEco> user = await _context.UserEco
-            .Include<UserEco, UserPermission>(e => e.UserPermissions)
-            .Include<UserEco, UserProfile>(u => u.UserProfile)
-            .ThenInclude(p => p.IdLocationNavigation)
-            .ThenInclude(l => l.IdProvinceNavigation)
+            .Include(e => e.UserPermissions)
+            .Include(u => u.UserProfile.IdLocationNavigation.IdProvinceNavigation)
             .AsNoTracking()
             .ToListAsync();
         return user;
     }
 
-    public async Task<UserEco> UserById(int id)
+    public async Task<UserEco> UserById(short id)
     {
-        IEnumerable<UserEco> list = await ListSelectUser();
-        UserEco? user = list.SingleOrDefault(x => x.Id == id);
+        UserEco? user = await _context.UserEco
+            .AsNoTracking()
+            .Include(e => e.UserPermissions)
+            .Include(u => u.UserProfile.IdLocationNavigation.IdProvinceNavigation)
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
         return user!;
     }
 }

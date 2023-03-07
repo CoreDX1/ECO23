@@ -1,7 +1,6 @@
 using AutoMapper;
 using POS.Application.Commons.Base;
 using POS.Application.DTO.Request;
-using POS.Application.DTO.Response.Location;
 using POS.Application.Interfaces;
 using POS.Domain.Entities;
 using POS.Infrastructure.Persistence.Interfaces;

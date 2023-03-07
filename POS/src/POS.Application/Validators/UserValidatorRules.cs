@@ -13,11 +13,17 @@ public class UserValidatorRules : AbstractValidator<UserEcoRequestDto>
             .WithMessage("Las contraseñas no coinciden")
             .NotNull()
             .NotEmpty()
-            .WithMessage("La contraseña no puede estar vacia");
+            .WithMessage("La contraseña no puede estar vacia")
+            .MinimumLength(6)
+            .WithMessage("La contraseña debe tener al mas 6 caracteres")
+            .MaximumLength(10)
+            .WithMessage("La contraseña menor a 10 caracteres");
         RuleFor<string?>(x => x.Email)
+            .EmailAddress()
+            .WithMessage("El correo no es válido")
             .NotNull()
             .NotEmpty()
             .WithMessage("El email no puede estar vacio");
-        RuleFor(x => x.IdProvince).IsInEnum().WithMessage("El id de provincia no es valido");
+        RuleFor(x => x.IdProvince).IsInEnum().WithMessage("La provincia no es válida");
     }
 }
